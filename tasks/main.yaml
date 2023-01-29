@@ -50,13 +50,13 @@
 - name: Include iptables.yaml
   ansible.builtin.include_tasks: iptables.yaml
 
-- name: Start wg0 before iptables setup
+- name: Start wg0 after iptables setup
   ansible.builtin.systemd:
     name: wg-quick@wg0.service
     state: started
   when: vpn_wg0 == "true"
 
-- name: Start wg1 before iptables setup
+- name: Start wg1 after iptables setup
   ansible.builtin.systemd:
     name: wg-quick@wg1.service
     state: started
