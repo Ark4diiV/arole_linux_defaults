@@ -1,0 +1,53 @@
+---
+- name: Upgrade Ubuntu
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+    autoclean: true
+    autoremove: true
+    clean: true
+
+- name: Purge snapd, ufw
+  ansible.builtin.apt:
+    name:
+      - snapd
+      - ufw
+    state: absent
+    purge: true
+
+- name: Delete snapd dir
+  ansible.builtin.file:
+    state: absent
+    path: /snap
+
+- name: Install common tools
+  ansible.builtin.apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: true
+
+# Configure SSHD
+- name: Include sshd.yaml
+  ansible.builtin.include_tasks: sshd.yaml
+
+# Configure Fail2ban
+- name: Include fail2ban.yaml
+  ansible.builtin.include_tasks: fail2ban.yaml
+
+- name: Stop wg0 before iptables setup
+  ansible.builtin.systemd:
+    name: wg-quick@wg0.service
+    state: stopped
+  ignore_errors: true
+  register: ignore_errors_register
+
+# Configure iptables
+- name: Include iptables.yaml
+  ansible.builtin.include_tasks: iptables.yaml
+
+- name: Start wg0 before iptables setup
+  ansible.builtin.systemd:
+    name: wg-quick@wg0.service
+    state: started
+  ignore_errors: true
+  register: ignore_errors_register

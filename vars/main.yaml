@@ -1,0 +1,17 @@
+packages:
+  - vim
+  - git
+  - htop
+  - zip
+  - unzip
+  - wget
+  - iotop
+  - iftop
+  - pwgen
+  - sshpass
+  - curl
+  - apt-transport-https
+  - ca-certificates
+  - iptables-persistent
+  - dos2unix
+  - fail2ban

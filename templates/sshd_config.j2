@@ -1,0 +1,13 @@
+Include /etc/ssh/sshd_config.d/*.conf
+Port {{ ansible_port }}
+PermitRootLogin yes
+PubkeyAuthentication yes
+PasswordAuthentication yes
+ChallengeResponseAuthentication no
+UsePAM yes
+X11Forwarding yes
+PrintMotd no
+ClientAliveInterval  1200
+ClientAliveCountMax 3
+AcceptEnv LANG LC_*
+Subsystem       sftp    /usr/lib/openssh/sftp-server

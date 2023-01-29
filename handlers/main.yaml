@@ -1,0 +1,12 @@
+---
+- name: Fail2ban_restart
+  ansible.builtin.systemd:
+    name: fail2ban
+    state: restarted
+    enabled: true
+
+- name: Sshd_reload
+  ansible.builtin.systemd:
+    name: sshd.service
+    state: reloaded
+    enabled: true

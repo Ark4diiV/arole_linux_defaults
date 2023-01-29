@@ -1,0 +1,7 @@
+---
+- name: Copy Fail2ban config
+  ansible.builtin.copy:
+    src: jail.local
+    dest: /etc/fail2ban/jail.local
+    mode: "644"
+  notify: Fail2ban_restart
