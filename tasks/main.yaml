@@ -34,14 +34,19 @@
 - name: Include fail2ban.yaml
   ansible.builtin.include_tasks: fail2ban.yaml
 
+# Configure iptables
 - name: Stop wg0 before iptables setup
   ansible.builtin.systemd:
     name: wg-quick@wg0.service
     state: stopped
-  ignore_errors: true
-  register: ignore_errors_register
+  when: vpn_wg0 == "true"
 
-# Configure iptables
+- name: Stop wg1 before iptables setup
+  ansible.builtin.systemd:
+    name: wg-quick@wg1.service
+    state: stopped
+  when: vpn_role == "main"
+
 - name: Include iptables.yaml
   ansible.builtin.include_tasks: iptables.yaml
 
@@ -49,5 +54,10 @@
   ansible.builtin.systemd:
     name: wg-quick@wg0.service
     state: started
-  ignore_errors: true
-  register: ignore_errors_register
+  when: vpn_wg0 == "true"
+
+- name: Start wg1 before iptables setup
+  ansible.builtin.systemd:
+    name: wg-quick@wg1.service
+    state: started
+  when: vpn_role == "main"
