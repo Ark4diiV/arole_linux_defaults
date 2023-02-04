@@ -1,16 +1,8 @@
 ---
-- name: iptables flush filter
-  ansible.builtin.iptables:
-    chain: "{{ item }}"
-    flush: true
-  with_items:  [ 'INPUT', 'FORWARD', 'OUTPUT' ]
-
-- name: iptables flush nat
-  ansible.builtin.iptables:
-    table: nat
-    chain: '{{ item }}'
-    flush: true
-  with_items: [ 'INPUT', 'OUTPUT', 'PREROUTING', 'POSTROUTING' ]
+- name: IPtables flush
+  ansible.builtin.command: service netfilter-persistent flush
+  register: command_output
+  changed_when: command_output.rc != 0
 
 - name: Allow ssh traffic to ipv4
   ansible.builtin.iptables:
