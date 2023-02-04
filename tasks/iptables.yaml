@@ -1,4 +1,17 @@
 ---
+- name: iptables flush filter
+  ansible.builtin.iptables:
+    chain: "{{ item }}"
+    flush: true
+  with_items:  [ 'INPUT', 'FORWARD', 'OUTPUT' ]
+
+- name: iptables flush nat
+  ansible.builtin.iptables:
+    table: nat
+    chain: '{{ item }}'
+    flush: true
+  with_items: [ 'INPUT', 'OUTPUT', 'PREROUTING', 'POSTROUTING' ]
+
 - name: Allow ssh traffic to ipv4
   ansible.builtin.iptables:
     action: append
