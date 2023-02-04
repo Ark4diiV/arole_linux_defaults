@@ -55,6 +55,15 @@
     comment: Allow all traffic originating on the local loopback interface
     ip_version: "ipv6"
 
+- name: Allow traffic to Apache
+  ansible.builtin.iptables:
+    chain: INPUT
+    jump: ACCEPT
+    in_interface: wg1
+    protocol: tcp
+    destination_port: 8080
+    state: present
+
 - name: Drop all ipv4 inbound traffic
   ansible.builtin.iptables:
     action: append

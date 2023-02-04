@@ -35,6 +35,24 @@
   ansible.builtin.include_tasks: fail2ban.yaml
 
 # Configure iptables
+- name: Stop Prometheus before iptables setup
+  ansible.builtin.systemd:
+    name: prometheus.service
+    state: stopped
+  when: vpn_role == "main"
+
+- name: Stop Grafana before iptables setup
+  ansible.builtin.systemd:
+    name: grafana.service
+    state: stopped
+  when: vpn_role == "main"
+
+- name: Stop Docker before iptables setup
+  ansible.builtin.systemd:
+    name: docker.service
+    state: stopped
+  when: vpn_role == "main"
+
 - name: Stop wg0 before iptables setup
   ansible.builtin.systemd:
     name: wg-quick@wg0.service
@@ -47,6 +65,7 @@
     state: stopped
   when: vpn_role == "main"
 
+# Change iptables
 - name: Include iptables.yaml
   ansible.builtin.include_tasks: iptables.yaml
 
@@ -59,5 +78,23 @@
 - name: Start wg1 after iptables setup
   ansible.builtin.systemd:
     name: wg-quick@wg1.service
+    state: started
+  when: vpn_role == "main"
+
+- name: Start Docker before iptables setup
+  ansible.builtin.systemd:
+    name: docker.service
+    state: started
+  when: vpn_role == "main"
+
+- name: Start Prometheus before iptables setup
+  ansible.builtin.systemd:
+    name: prometheus.service
+    state: started
+  when: vpn_role == "main"
+
+- name: Start Grafana before iptables setup
+  ansible.builtin.systemd:
+    name: grafana.service
     state: started
   when: vpn_role == "main"
