@@ -38,7 +38,7 @@
   ignore_errors: true
   register: ignore_errors_register
 
-- name: Start fail2ban before iptables setup
+- name: Start fail2ban after iptables setup
   ansible.builtin.systemd:
     name: fail2ban.service
     state: started
