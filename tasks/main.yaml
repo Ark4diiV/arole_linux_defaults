@@ -5,6 +5,11 @@
     state: directory
     mode: '0755'
 
+- name: Delete old gpg
+  ansible.builtin.file:
+    path: /etc/apt/keyrings/docker.gpg
+    state: absent
+
 - name: Download Docker GPG key
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
