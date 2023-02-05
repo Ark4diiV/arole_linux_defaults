@@ -11,7 +11,6 @@
   ansible.builtin.apt:
     name:
       - snapd
-      - ufw
     state: absent
     purge: true
 
@@ -34,14 +33,6 @@
 - name: Include fail2ban.yaml
   ansible.builtin.include_tasks: fail2ban.yaml
 
-# Stop all daemons
-- name: Include stop_daemons.yaml
-  ansible.builtin.include_tasks: stop_daemons.yaml
-
-# Change iptables
-- name: Include iptables.yaml
-  ansible.builtin.include_tasks: iptables.yaml
-
-# Start all daemons
-- name: Include start_daemons.yaml
-  ansible.builtin.include_tasks: start_daemons.yaml
+# Configure ufw
+- name: Include ufw.yaml
+  ansible.builtin.include_tasks: ufw.yaml

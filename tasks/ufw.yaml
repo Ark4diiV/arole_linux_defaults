@@ -1,0 +1,35 @@
+---
+- name: Open SSH port
+  community.general.ufw:
+    port: "{{ ansible_port }}"
+    rule: allow
+
+- name: Open wg0 port
+  community.general.ufw:
+    port: "{{ vpn_wg0_port }}"
+    rule: allow
+  when: vpn_wg0 == "true"
+
+- name: Open wg1 port
+  community.general.ufw:
+    port: "{{ vpn_wg1_port }}"
+    rule: allow
+  when: vpn_role == main
+
+# Allow access to everything on wg1 iface ports
+- name: Allow traffic to wg1 iface
+  community.general.ufw:
+    interface: wg1
+    direction: in
+    rule: allow
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+    policy: reject
+
+- name: Enable UFW service
+  ansible.builtin.systemd:
+    name: ufw.service
+    state: started
+    enabled: true
