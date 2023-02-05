@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Ark4diiV
-  description: Defaults for Linux server
+  description: This Ansible role contains defaults for Ubuntu server. Make all Linux servers idempotent.
   company: NoName
   license: MIT
   role_name: arole_linux_defaults
